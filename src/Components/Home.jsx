@@ -13,6 +13,7 @@ function Home() {
   const [products, setProducts] = useContext(ProductContext);
   const [filteredProducts, setfilteredProducts] = useState(null);
   useEffect(() => {
+    console.log('eneterd Home')
     if (products) {
       if(!(localStorage.getItem("products"))){
         console.log("setted prod in local")
@@ -24,16 +25,15 @@ function Home() {
         );}
       else if (pathname == "/") {
         setfilteredProducts([...products])}
-       // passing ..products and not products
-  }},[products,category]); // products is just to check null vs array at start. category to check searchbar.
-  // infinite loop is caused by adding [..products] as js check references to know nd also filterdProducts is changing cotinuosly.
-  // whether state changed or not. if i passed (products) then no change but everytime im adding [..products]. refrence changes
-  // leads to state chage and infinite loop
-
-  // SUPER IMPORTANT
-  // on ebery refresh on render products value is changing from null to an array. as it is aync. so we need to add producs
-  // inside dependencies to chcek everytime products changes from null to an array. then update the filtered products.
-  // did not pass filterd products coz we are using filtered.map which is changing everytime
+       // passing ...products and not products
+  }},[products,category]); 
+  // changing setFilteredProducts to products on every render when page refresh and category changes.
+  // 1. product value changes from null to an array on refresh. So to check that we added products.
+  // 2. category value changes from nothing in searchbar to something in search bar about category when click on category.
+  // 3. didn't added filteredProducts because it is changing too many times. results in infinite loop.
+    //  1. Don't know why and where?
+    //  2. Adding [...products] in setFiteredProduct. js thinking we are passing new state even though value is same.
+    //  3. But also when we change it to (products) again infinte loop starts. So cant point to ...products even though it is affecting it.
 
   // const getCategory = async () => {
   //   try {
